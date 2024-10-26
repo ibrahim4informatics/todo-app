@@ -6,6 +6,7 @@ import {JwtService} from '@nestjs/jwt';
 import { AuthServiceInterface } from './interfaces/AuthServiceInterface';
 import { Response } from 'supertest';
 import { LocalUserLoginDto } from './dto/LocalUserLoginDto';
+import { BcryptService } from '../bcrypt/bcrypt.service';
 
 
 
@@ -14,7 +15,8 @@ export class AuthService implements AuthServiceInterface{
 
   constructor(
     private readonly  prismaService:PrismaService,
-    private readonly  jwtService:JwtService
+    private readonly  jwtService:JwtService,
+    private readonly  bcryptService:BcryptService
     ) {
   }
 
@@ -23,6 +25,6 @@ export class AuthService implements AuthServiceInterface{
   }
 
   async loginLocalUser(localUserLoginDto:LocalUserLoginDto):Promise<any>{
-    return {message:"login a local user", cred:localUserLoginDto}
+    return {message:"login a local user", cred:localUserLoginDto,hashPass: await  this.bcryptService.hash(localUserLoginDto.password)}
   }
 }
