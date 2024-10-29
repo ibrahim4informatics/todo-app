@@ -1,4 +1,3 @@
-import { User } from '@prisma/client';
 import { LocalUserLoginDto } from '../dto/LocalUserLoginDto';
 import { LocalUserRegisterDto } from '../dto/LocalUserRegisterDto';
 

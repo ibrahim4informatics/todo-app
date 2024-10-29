@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalUserRegisterDto } from './dto/LocalUserRegisterDto';
 import { LocalUserLoginDto } from './dto/LocalUserLoginDto';
@@ -15,6 +15,7 @@ export class AuthController {
     return this.authService.registerLocalUser(localUserRegisterDto);
   }
   @Post("login")
+  @HttpCode(HttpStatus.OK)
   loginLocalAccount(@Body() localUserLoginDto: LocalUserLoginDto) {
     return this.authService.loginLocalUser(localUserLoginDto);
   }
