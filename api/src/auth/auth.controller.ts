@@ -5,6 +5,7 @@ import { LocalUserLoginDto } from './dto/LocalUserLoginDto';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthReq, GeneralAuthenticator } from './guards/GeneralAuthenticator';
 import { Response } from 'express';
+import { ResetPasswordDto } from './dto/ResetPasswordDto';
 
 
 @Controller("auth")
@@ -39,5 +40,10 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   loginLocalAccount(@Body() localUserLoginDto: LocalUserLoginDto, @Res({passthrough:true})res:Response) {
     return this.authService.loginLocalUser(localUserLoginDto, res);
+  }
+
+  @Post("reset/req")
+  resetPasswordRequest(@Body() resetPasswordDto:ResetPasswordDto){
+    return this.authService.requestResetPassword(resetPasswordDto);
   }
 }
