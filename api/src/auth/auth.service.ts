@@ -1,5 +1,8 @@
 import {
   BadRequestException,
+  
+  ForbiddenException,
+  
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -17,6 +20,7 @@ import { AuthReq } from './guards/GeneralAuthenticator';
 import { Response } from 'express';
 import { ResetPasswordDto } from './dto/ResetPasswordDto';
 import { MailerService } from 'src/mailer/mailer.service';
+import { ChangePasswordDto } from './dto/ChangePasswordDto';
 
 @Injectable()
 export class AuthService {
@@ -265,5 +269,29 @@ export class AuthService {
         },
       );
     return { message: 'Email Sent Successfully', metaData: result.message };
+  }
+  async checkResetPasswordUrlValid(token:string){
+    if(!token) throw new UnauthorizedException("invalid or expired token", {cause:"Can not verify reset password token",description:"send a reset request the token pprovided is not valid"});
+    try {
+      const payload:any = await this.jwtService.verifyAsync(token,{secret:process.env.REFRESH_PASS_SECRET});
+      return {message:"the reset url is valid"};
+
+    }
+    catch {
+      throw new UnauthorizedException("invalid or expired token", {cause:"Can not verify reset password token",description:"send a reset request the token pprovided is not valid"})
+    }
+  }
+  async changePassword(changePasswordDto:ChangePasswordDto, token:string){
+    if(!token) throw new UnauthorizedException("Can not make this action");
+    try {
+
+      const payload:any = await this.jwtService.verifyAsync(token, {secret:process.env.REFRESH_PASS_SECRET});
+      await this.prismaService.user.update({where:{email:payload.email}, data:{password: await this.bcryptService.hash(changePasswordDto.password)}});
+      return {message:"password reset success"}
+
+    }
+    catch {
+      throw new UnauthorizedException("Can not  make this action");
+    }
   }
 }
