@@ -8,8 +8,8 @@ export class MailerService {
     port: 465,
     service: 'gmail',
     auth: {
-      user: process.env.EMAIL,
-      pass: process.env.EMAIL_PASS,
+      user: process.env.MAIL_ADDR,
+      pass: process.env.MAIL_PASS,
     },
   });
 

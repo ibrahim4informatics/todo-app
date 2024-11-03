@@ -8,9 +8,9 @@ import { PrismaService } from '../../prisma/prisma.service';
 export class GoogleStrategy extends PassportStrategy(Strategy) {
   constructor(private prismaService: PrismaService) {
     super({
-      clientID: '82949224144-bpajfajd4ekhe2gg51gj2ndu4e14vd1m.apps.googleusercontent.com',
-      clientSecret: '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',
-      callbackURL:  "http://localhost:5000/auth/google/redirect",
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL:  process.env.GOOGLE_CB_URL,
       scope: ['email', 'profile'],
     });
   }
