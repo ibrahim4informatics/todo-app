@@ -229,7 +229,7 @@ export class AuthService {
                         <p>We received a request to reset your password. Click the button below to set up a new password:</p>
                         <a href="${process.env.CLIENT_URL}/reset?token=${token}" class="button">Reset Password</a>
                         <p>If you didn't request a password reset, please ignore this email or contact support if you have concerns.</p>
-                        <p>Thanks,<br>The {{Your Brand}} Team</p>
+                        <p>Thanks,<br>The IBDEV Team</p>
                         </div>
                         <div class="footer">
                         <p>If you have any questions, contact us at support@ibdev-todo.com</p>
@@ -246,7 +246,7 @@ export class AuthService {
     if (!user || !user.password)
       throw new NotFoundException('can not find user', {
         cause: 'invalid informations',
-        description: 'the email pprovided is not linked to any local account',
+        description: 'the email provided is not linked to any local account',
       });
     const token = await this.jwtService.signAsync(
       { email: email },
@@ -254,7 +254,7 @@ export class AuthService {
     );
     const htmlEmailToSend: string = this.mailCreator(token);
     const result = await this.mailerService.sendMail({
-      from: `<IBDEV-TODO>:${process.env.EMAIL}`,
+      from: `"IBDEV-TODO"<ibrahimelkhalilbenyahia@gmail.com>`,
       to: email,
       subject: 'Reset Password',
       html: htmlEmailToSend,
